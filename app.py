@@ -24,6 +24,7 @@ db.create_all()
 toolbar = DebugToolbarExtension(app)
 
 
+# Opportunity to move this function into the Cupcake model to make it an instance method
 def serialize_cupcake(cupcake):
     """Serialize a cupcake SQLAlchemy object to a dictionary"""
 
@@ -63,7 +64,7 @@ def add_cupcake():
     flavor = request.json["flavor"]
     size = request.json["size"]
     rating = request.json["rating"]
-    # how does it know which falsey value to default to?
+    # how does it know which falsey value to default to? it reads it left to right
     image = request.json["image"] or None
 
     new_cupcake = Cupcake(flavor=flavor, 
@@ -78,3 +79,5 @@ def add_cupcake():
 
     return (jsonify(cupcake=serialized), 201)
     # how do we remove possibility of duplication
+    # add constraints of UNIQUE but do it across multiple columns (see stackoverflow)
+    # can add these constraints in __args__(?)

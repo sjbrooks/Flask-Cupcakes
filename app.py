@@ -56,6 +56,9 @@ def list_single_cupcake(id):
 
     return jsonify(cupcake=serialized)
 
+# Opportunity to update this to add validation through wtforms validate on submit
+# so we don't have to write try catch for every field
+# This is especially important because we are never submitting a form here
 @app.route('/api/cupcakes', methods=['POST'])
 def add_cupcake():
     """Add a new cupcake to the database using post request JSON sent.
@@ -64,7 +67,8 @@ def add_cupcake():
     flavor = request.json["flavor"]
     size = request.json["size"]
     rating = request.json["rating"]
-    # how does it know which falsey value to default to? it reads it left to right
+    # how does it know which falsey value to default to? 
+    # it reads it left to right
     image = request.json["image"] or None
 
     new_cupcake = Cupcake(flavor=flavor, 

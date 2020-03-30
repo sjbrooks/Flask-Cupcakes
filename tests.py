@@ -42,7 +42,7 @@ class CupcakeViewsTestCase(TestCase):
         """Make demo data."""
 
         Cupcake.query.delete()
-        ## clarify this instance- which cupcake from above is being created?
+        ## WHAT IS ** for? equivalent of spread operator that turns all the keys into keyword arguments
         cupcake = Cupcake(**CUPCAKE_DATA)
         db.session.add(cupcake)
         db.session.commit()
@@ -117,6 +117,8 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(Cupcake.query.count(), 2)
 
     def test_update_cupcake(self):
+        # DOES DEFAULT VALUE ONLY GET ASSIGNED WHEN YOU FIRST INSTANTIATE CLASS? YES
+        # 
         """Test updating a cupcake via PATCH request."""
 
         with app.test_client() as client:
@@ -151,3 +153,5 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(data, {"message": "Deleted"})
 
             self.assertEqual(Cupcake.query.count(), 0)
+
+    # Room to add pessimistic tests to make sure our 404's are working

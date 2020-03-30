@@ -1,6 +1,6 @@
 """Flask app for Cupcakes"""
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Cupcake
 # from flask_wtf import FlaskForm
@@ -120,3 +120,7 @@ def delete_cupcake(id):
     db.session.commit()
 
     return(jsonify(deleted))
+
+@app.route('/')
+def render_root():
+    return render_template('cupcakes.html')

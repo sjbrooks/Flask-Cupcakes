@@ -67,13 +67,13 @@ def add_cupcake():
     flavor = request.json["flavor"]
     size = request.json["size"]
     rating = request.json["rating"]
-    # how does it know which falsey value to default to? 
+    # how does it know which falsey value to default to?
     # it reads it left to right
     image = request.json["image"] or None
 
-    new_cupcake = Cupcake(flavor=flavor, 
-                          size=size, 
-                          rating=rating, 
+    new_cupcake = Cupcake(flavor=flavor,
+                          size=size,
+                          rating=rating,
                           image=image)
 
     db.session.add(new_cupcake)
@@ -85,3 +85,38 @@ def add_cupcake():
     # how do we remove possibility of duplication
     # add constraints of UNIQUE but do it across multiple columns (see stackoverflow)
     # can add these constraints in __args__(?)
+
+
+@app.route('/api/cupcakes/<int:id>', methods=["PATCH"])
+def update_cupcake(id):
+    """Update a cupcake in database from a PATCH request.
+    Respond with JSON {cupcake: {id, flavor, size, rating, image}}"""
+
+    cupcake = Cupcake.query.get_or_404(id)
+
+    cupcake.flavor = request.json["flavor"]
+    cupcake.size = request.json["size"]
+    cupcake.rating = request.json["rating"]
+    cupcake.image = request.json["image"] or None
+
+    db.session.commit()
+
+    serialized = serialize_cupcake(cupcake)
+
+    return(jsonify(cupcake=serialized), 200)
+
+
+@app.route('/api/cupcakes/<int:id>', methods=["DELETE"])
+def delete_cupcake(id):
+    """Delete a cupcake from the database from DELETE request.
+    Respond with JSON {message: "Deleted"}"""
+
+    cupcake_inst = Cupcake.query.get_or_404(id)
+    # added method to allow for msg customization
+    deleted = cupcake_inst.delete_msg()
+
+    cupcake = Cupcake.query.filter(Cupcake.id == id)
+    cupcake.delete()
+    db.session.commit()
+
+    return(jsonify(deleted))

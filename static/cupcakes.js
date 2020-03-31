@@ -19,9 +19,6 @@ async function showCupcakes() {
               Size: ${cupcake.size}, Rating: ${cupcake.rating}
             </p>
           </div>`)
-
-    // $("<div>")
-    // $('<li>').text(cupcake.flavor);
     $CUPCAKES.append($htmlCupcake);
   }
 }
@@ -41,8 +38,17 @@ $FORM.on('submit', async function handleFormSubmission(evt) {
   })
 
   cupcake = resp.data.cupcake;
-  let htmlCupcake = $('<li>').text(cupcake.flavor);
-  $CUPCAKES.append(htmlCupcake);
+  
+  let $htmlCupcake =
+      $(`<div class="container col-2">
+            <img src=${cupcake.image} alt=${cupcake.flavor} width="150px" height="auto">
+            <h3>${cupcake.flavor}</h3>
+            <p>
+              Size: ${cupcake.size}, Rating: ${cupcake.rating}
+            </p>
+          </div>`)
+
+  $CUPCAKES.append($htmlCupcake);
 
   $FORM.trigger("reset");
 })

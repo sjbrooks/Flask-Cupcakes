@@ -1,3 +1,6 @@
+HTTP_OKAY = 200
+HTTP_CREATED = 201
+
 """Flask app for Cupcakes"""
 
 from flask import Flask, jsonify, request, render_template, redirect, flash
@@ -28,6 +31,7 @@ toolbar = DebugToolbarExtension(app)
 def serialize_cupcake(cupcake):
     """Serialize a cupcake SQLAlchemy object to a dictionary"""
 
+    # the comma on line 40 is very good style (more flexible and makes it more obvious when there is a new field added)
     return {
         "id": cupcake.id,
         "flavor": cupcake.flavor,
@@ -81,7 +85,7 @@ def add_cupcake():
 
     serialized = serialize_cupcake(new_cupcake)
 
-    return (jsonify(cupcake=serialized), 201)
+    return (jsonify(cupcake=serialized), HTTP_CREATED)
     # how do we remove possibility of duplication
     # add constraints of UNIQUE but do it across multiple columns (see stackoverflow)
     # can add these constraints in __args__(?)
@@ -103,7 +107,7 @@ def update_cupcake(id):
 
     serialized = serialize_cupcake(cupcake)
 
-    return(jsonify(cupcake=serialized), 200)
+    return(jsonify(cupcake=serialized), HTTP_OKAY)
 
 
 @app.route('/api/cupcakes/<int:id>', methods=["DELETE"])

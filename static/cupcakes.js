@@ -7,22 +7,27 @@ async function getCupcakes() {
   return resp.data.cupcakes;
 }
 
+function createHTMLCupcake(cupcake) {
+  let $htmlCupcake = 
+        $(`<div class="container col-2">
+            <img src=${cupcake.image} alt=${cupcake.flavor} width="150px" height="auto">
+            <h3>${cupcake.flavor}</h3>
+            <p>
+              Size: ${cupcake.size}
+            </p>
+            <p>
+            Rating: ${cupcake.rating}
+            </p>
+          </div>`)
+
+  $CUPCAKES.append($htmlCupcake);
+}
+
 async function showCupcakes() {
   cupcakes = await getCupcakes();
   console.log("The cupcakes of the day are", cupcakes)
   for (cupcake of cupcakes) {
-    let $htmlCupcake =
-        $(`<div class="container col-2 cupcake-div">
-              <img src=${cupcake.image} alt=${cupcake.flavor} width="150px" height="150px">
-              <h3>${cupcake.flavor}</h3>
-              <p>
-                Size: ${cupcake.size}
-              </p>
-              <p>
-              Rating: ${cupcake.rating}
-              </p>
-            </div>`)
-    $CUPCAKES.append($htmlCupcake);
+    createHTMLCupcake(cupcake);
   }
 }
 
@@ -41,20 +46,7 @@ $FORM.on('submit', async function handleFormSubmission(evt) {
   })
 
   cupcake = resp.data.cupcake;
-  
-  let $htmlCupcake =
-      $(`<div class="container col-2">
-            <img src=${cupcake.image} alt=${cupcake.flavor} width="150px" height="auto">
-            <h3>${cupcake.flavor}</h3>
-            <p>
-              Size: ${cupcake.size}
-            </p>
-            <p>
-            Rating: ${cupcake.rating}
-            </p>
-          </div>`)
-
-  $CUPCAKES.append($htmlCupcake);
+  createHTMLCupcake(cupcake);
 
   $FORM.trigger("reset");
 })

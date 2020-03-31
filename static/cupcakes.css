@@ -1,0 +1,22 @@
+#cupcakes-list {
+  position: relative;
+  top: 3rem;
+  background: lightgrey;
+  padding: 2rem;
+  border-radius: 2%;
+}
+
+#cupcake-form {
+  position: relative;
+  top: 6rem;
+  padding: 0 0 3rem;
+}
+
+.cupcake-div {
+  background-color: white;
+  padding: 1rem;
+}
+
+img {
+  margin: 0 0 1rem;
+}
